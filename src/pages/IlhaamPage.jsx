@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { Link } from 'react-router-dom';
-import { Calendar, MapPin, Award, ArrowRight, ArrowUpRight, Phone, Mail } from 'lucide-react';
-import { useReveal, useStaggerReveal } from '../hooks/useReveal';
+import { Calendar, MapPin, Award, ArrowRight, ArrowUpRight, Mail } from 'lucide-react';
+import { useReveal } from '../hooks/useReveal';
 import { useIsMobile } from '../hooks/useIsMobile';
 
 const events = [
@@ -61,7 +61,6 @@ export default function IlhaamPage() {
   const [heroLabelRef, heroLabelVis] = useReveal(0.1);
   const [heroTitleRef, heroTitleVis] = useReveal(0.1);
   const [heroMetaRef, heroMetaVis] = useReveal(0.1);
-  const [aboutLeftRef, aboutLeftVis] = useReveal(0.15);
   const [compPanelRef, compPanelVis] = useReveal(0.1);
   const [talksRef, talksVis] = useReveal(0.15);
   const [ctaRef, ctaVis] = useReveal(0.15);

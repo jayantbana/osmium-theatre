@@ -64,7 +64,7 @@ export default function IlhaamTeaser() {
   const [infoRef, infoVisible] = useReveal(0.15);
   const [listRef, listTriggered, listDelays] = useStaggerReveal(events.length, 100, 120);
 
-  const goTo = (i) => {
+  const goTo = useCallback((i) => {
     setTransitioning(true);
     clearInterval(timerRef.current);
     clearInterval(progressRef.current);
@@ -72,9 +72,8 @@ export default function IlhaamTeaser() {
       setActive(i);
       setProgress(0);
       setTransitioning(false);
-      startTimer(i);
     }, 250);
-  };
+  }, []);
 
   const startTimer = useCallback((current) => {
     clearInterval(progressRef.current);
@@ -87,13 +86,16 @@ export default function IlhaamTeaser() {
         goTo((current + 1) % events.length);
       }
     }, 50);
-  }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [goTo]);
 
   useEffect(() => {
     startTimer(0);
+    const timerInterval = timerRef.current;
+    const progressInterval = progressRef.current;
     return () => {
-      clearInterval(timerRef.current);
-      clearInterval(progressRef.current);
+      clearInterval(timerInterval);
+      clearInterval(progressInterval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
