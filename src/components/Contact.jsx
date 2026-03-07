@@ -139,15 +139,15 @@ export default function Contact() {
                 }}>
                   <Icon
                     size={20}
-                    color={hov ? '#CC0000' : '#3A3A3A'}
+                    color={hoveredTile === i ? '#CC0000' : '#3A3A3A'}
                     style={{ transition: 'color 0.2s' }}
                   />
                   <ArrowUpRight
                     size={14}
-                    color={hov ? '#CC0000' : '#3A3A3A'}
+                    color={hoveredTile === i ? '#CC0000' : '#3A3A3A'}
                     style={{
                       transition: 'all 0.2s',
-                      transform: hov ? 'translate(2px,-2px)' : 'translate(0,0)',
+                      transform: hoveredTile === i ? 'translate(2px,-2px)' : 'translate(0,0)',
                     }}
                   />
                 </div>
@@ -163,7 +163,7 @@ export default function Contact() {
                 <div style={{
                   fontFamily: "'Cormorant Garamond', serif",
                   fontWeight: 600, fontSize: '18px',
-                  color: hov ? '#F5F0E8' : '#9CA3AF',
+                  color: hoveredTile === i ? '#F5F0E8' : '#9CA3AF',
                   transition: 'color 0.3s', marginBottom: '10px',
                 }}>
                   {value}
@@ -181,7 +181,7 @@ export default function Contact() {
                 <div style={{
                   position: 'absolute', bottom: 0, left: 0, right: 0,
                   height: '2px', background: '#CC0000',
-                  transform: hov ? 'scaleX(1)' : 'scaleX(0)',
+                  transform: hoveredTile === i ? 'scaleX(1)' : 'scaleX(0)',
                   transformOrigin: 'left',
                   transition: 'transform 0.3s ease',
                 }} />
