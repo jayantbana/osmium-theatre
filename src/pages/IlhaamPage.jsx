@@ -62,11 +62,6 @@ export default function IlhaamPage() {
   const [heroTitleRef, heroTitleVis] = useReveal(0.1);
   const [heroMetaRef, heroMetaVis] = useReveal(0.1);
   const [aboutLeftRef, aboutLeftVis] = useReveal(0.15);
-  const [aboutRightRef, aboutRightVis] = useReveal(0.15);
-  const [stageLeftRef, stageLeftVis] = useReveal(0.1);
-  const [stageRightRef, stageRightVis] = useReveal(0.1);
-  const [compLabelRef, compLabelVis] = useReveal(0.15);
-  const [compTitleRef, compTitleVis] = useReveal(0.15);
   const [compPanelRef, compPanelVis] = useReveal(0.1);
   const [talksRef, talksVis] = useReveal(0.15);
   const [ctaRef, ctaVis] = useReveal(0.15);

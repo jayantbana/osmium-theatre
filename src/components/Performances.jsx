@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { ExternalLink, ArrowUpRight } from 'lucide-react';
+import { ArrowUpRight } from 'lucide-react';
 import { useReveal, useStaggerReveal } from '../hooks/useReveal';
 import { useIsMobile } from '../hooks/useIsMobile';
 

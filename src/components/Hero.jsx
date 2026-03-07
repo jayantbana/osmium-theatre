@@ -1,6 +1,6 @@
 import React, { useEffect, useRef, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { ChevronDown } from 'lucide-react';
+
 import { useIsMobile } from '../hooks/useIsMobile';
 
 const words = ['STORYTELLING', 'EXPRESSION', 'PASSION', 'CREATIVITY', 'THEATRE'];

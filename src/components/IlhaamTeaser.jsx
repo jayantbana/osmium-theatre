@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Calendar, MapPin, Award } from 'lucide-react';
 import { useReveal, useStaggerReveal } from '../hooks/useReveal';
@@ -76,7 +76,8 @@ export default function IlhaamTeaser() {
     }, 250);
   };
 
-  const startTimer = (current) => {
+  const startTimer = useCallback((current) => {
+    clearInterval(progressRef.current);
     let p = 0;
     progressRef.current = setInterval(() => {
       p += (100 / (INTERVAL / 50));
@@ -86,7 +87,7 @@ export default function IlhaamTeaser() {
         goTo((current + 1) % events.length);
       }
     }, 50);
-  };
+  }, []);
 
   useEffect(() => {
     startTimer(0);
@@ -94,6 +95,7 @@ export default function IlhaamTeaser() {
       clearInterval(timerRef.current);
       clearInterval(progressRef.current);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const ev = events[active];
