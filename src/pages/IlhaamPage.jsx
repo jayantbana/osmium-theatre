@@ -78,7 +78,7 @@ export default function IlhaamPage() {
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section style={{
         position: 'relative', overflow: 'hidden',
-        padding: '100px 48px 0',
+        padding: isMobile ? '60px 20px 0' : '100px 48px 0',
         borderBottom: '3px solid #CC0000',
       }}>
         {/* Background photo */}
@@ -89,7 +89,7 @@ export default function IlhaamPage() {
             onError={e => e.target.style.opacity = 0}
             style={{
               width: '100%', height: '100%',
-              objectFit: 'cover', opacity: 0.07,
+              objectFit: 'cover', opacity: 0.04,
               filter: 'grayscale(100%)',
             }}
           />
@@ -128,16 +128,17 @@ export default function IlhaamPage() {
             style={{
               fontFamily: "'Cormorant', serif",
               fontWeight: 900,
-              fontSize: 'clamp(100px, 18vw, 200px)',
+              fontSize: isMobile ? 'clamp(72px, 22vw, 120px)' : 'clamp(100px, 18vw, 200px)',
               background: 'linear-gradient(135deg, #B8960C 0%, #E8C86A 40%, #B8960C 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
               backgroundClip: 'text',
-              lineHeight: 0.85, letterSpacing: '-4px',
+              lineHeight: 0.85, letterSpacing: isMobile ? '-2px' : '-4px',
               marginBottom: '0',
               opacity: heroTitleVis ? 1 : 0,
               animation: heroTitleVis ? 'reveal-up 1s cubic-bezier(0.22,1,0.36,1) 0.1s both' : 'none',
-            }}>
+            }}
+          >
             ILHAAM
           </h1>
 
@@ -145,31 +146,32 @@ export default function IlhaamPage() {
           <div
             ref={heroMetaRef}
             style={{
-              display: 'flex', alignItems: 'center',
+              display: 'flex', alignItems: isMobile ? 'flex-start' : 'center',
+              flexDirection: isMobile ? 'column' : 'row',
               justifyContent: 'space-between',
               padding: '32px 0 40px',
               borderTop: '1px solid rgba(255,255,255,0.06)',
               marginTop: '24px',
-              flexWrap: 'wrap', gap: '24px',
+              flexWrap: 'wrap', gap: '20px',
               opacity: heroMetaVis ? 1 : 0,
               animation: heroMetaVis ? 'reveal-up 0.7s cubic-bezier(0.22,1,0.36,1) 0.25s both' : 'none',
-            }}>
+            }}
+          >
             {/* Left — tagline */}
             <div style={{
               fontFamily: "'Cormorant Garamond', serif",
               fontStyle: 'italic', fontWeight: 300,
-              fontSize: '20px', color: 'rgba(245,240,232,0.4)',
-              letterSpacing: '0.1em',
+              fontSize: isMobile ? '16px' : '20px', color: 'rgba(245,240,232,0.4)',
+              letterSpacing: '0.05em',
             }}>
               A celebration of imagination, culture, and artistic expression.
             </div>
 
-            {/* Right — meta + download button */}
+            {/* Meta info row */}
             <div style={{
               display: 'flex', alignItems: 'center',
-              gap: '32px', flexWrap: 'wrap',
+              gap: isMobile ? '16px' : '32px', flexWrap: 'wrap',
             }}>
-              {/* Meta info */}
               {[
                 { Icon: Calendar, text: '30 March 2026' },
                 { Icon: MapPin, text: 'UIET, Panjab University' },
@@ -184,61 +186,63 @@ export default function IlhaamPage() {
                   {text}
                 </div>
               ))}
-
-              {/* Download Brochure Button */}
-              <a
-                href="/brochure/ilhaam-2026-brochure.pdf"
-                download="ILHAAM-2026-Brochure.pdf"
-                style={{
-                  display: 'flex', alignItems: 'center', gap: '10px',
-                  padding: '13px 28px',
-                  background: 'transparent',
-                  border: '1px solid #B8960C',
-                  color: '#B8960C',
-                  textDecoration: 'none',
-                  fontSize: '10px', fontWeight: 700,
-                  letterSpacing: '0.3em', textTransform: 'uppercase',
-                  fontFamily: 'Inter, sans-serif',
-                  borderRadius: '2px',
-                  position: 'relative', overflow: 'hidden',
-                  transition: 'all 0.3s ease',
-                  boxShadow: '0 0 20px rgba(184,150,12,0.15), inset 0 0 20px rgba(184,150,12,0.03)',
-                }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.background = '#B8960C';
-                  e.currentTarget.style.color = '#0C0C0C';
-                  e.currentTarget.style.boxShadow = '0 0 40px rgba(184,150,12,0.5), inset 0 0 20px rgba(184,150,12,0.1)';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.background = 'transparent';
-                  e.currentTarget.style.color = '#B8960C';
-                  e.currentTarget.style.boxShadow = '0 0 20px rgba(184,150,12,0.15), inset 0 0 20px rgba(184,150,12,0.03)';
-                }}
-              >
-                {/* Animated shimmer line */}
-                <div style={{
-                  position: 'absolute', top: 0, left: '-100%',
-                  width: '100%', height: '100%',
-                  background: 'linear-gradient(90deg, transparent, rgba(184,150,12,0.15), transparent)',
-                  animation: 'shimmer 2.5s infinite',
-                  pointerEvents: 'none',
-                }} />
-
-                {/* Download icon SVG */}
-                <svg
-                  width="14" height="14" viewBox="0 0 24 24"
-                  fill="none" stroke="currentColor"
-                  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
-                  style={{ flexShrink: 0 }}
-                >
-                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
-                  <polyline points="7 10 12 15 17 10" />
-                  <line x1="12" y1="15" x2="12" y2="3" />
-                </svg>
-
-                Download Brochure
-              </a>
             </div>
+
+            {/* Download Brochure Button */}
+            <a
+              href="/brochure/ilhaam-2026-brochure.pdf"
+              download="ILHAAM-2026-Brochure.pdf"
+              style={{
+                display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '10px',
+                padding: '13px 28px',
+                width: isMobile ? '100%' : 'auto',
+                boxSizing: 'border-box',
+                background: 'transparent',
+                border: '1px solid #B8960C',
+                color: '#B8960C',
+                textDecoration: 'none',
+                fontSize: '10px', fontWeight: 700,
+                letterSpacing: '0.3em', textTransform: 'uppercase',
+                fontFamily: 'Inter, sans-serif',
+                borderRadius: '2px',
+                position: 'relative', overflow: 'hidden',
+                transition: 'all 0.3s ease',
+                boxShadow: '0 0 20px rgba(184,150,12,0.15), inset 0 0 20px rgba(184,150,12,0.03)',
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.background = '#B8960C';
+                e.currentTarget.style.color = '#0C0C0C';
+                e.currentTarget.style.boxShadow = '0 0 40px rgba(184,150,12,0.5), inset 0 0 20px rgba(184,150,12,0.1)';
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.background = 'transparent';
+                e.currentTarget.style.color = '#B8960C';
+                e.currentTarget.style.boxShadow = '0 0 20px rgba(184,150,12,0.15), inset 0 0 20px rgba(184,150,12,0.03)';
+              }}
+            >
+              {/* Animated shimmer line */}
+              <div style={{
+                position: 'absolute', top: 0, left: '-100%',
+                width: '100%', height: '100%',
+                background: 'linear-gradient(90deg, transparent, rgba(184,150,12,0.15), transparent)',
+                animation: 'shimmer 2.5s infinite',
+                pointerEvents: 'none',
+              }} />
+
+              {/* Download icon SVG */}
+              <svg
+                width="14" height="14" viewBox="0 0 24 24"
+                fill="none" stroke="currentColor"
+                strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                style={{ flexShrink: 0 }}
+              >
+                <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                <polyline points="7 10 12 15 17 10" />
+                <line x1="12" y1="15" x2="12" y2="3" />
+              </svg>
+
+              Download Brochure
+            </a>
           </div>
         </div>
       </section>
@@ -418,8 +422,10 @@ export default function IlhaamPage() {
 
           {/* Right — large italic quote */}
           <div style={{
-            borderLeft: '1px solid rgba(255,255,255,0.06)',
-            paddingLeft: '80px',
+            borderLeft: isMobile ? 'none' : '1px solid rgba(255,255,255,0.06)',
+            borderTop: isMobile ? '1px solid rgba(255,255,255,0.06)' : 'none',
+            paddingLeft: isMobile ? '0' : '80px',
+            paddingTop: isMobile ? '24px' : '0',
           }}>
             <div style={{
               fontFamily: "'Cormorant Garamond', serif",
@@ -802,12 +808,14 @@ export default function IlhaamPage() {
             </h2>
           </div>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '16px', width: isMobile ? '100%' : 'auto' }}>
             <Link to="/register" style={{
-              display: 'flex', alignItems: 'center', gap: '12px',
+              display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px',
               background: '#CC0000', color: '#F5F0E8',
               textDecoration: 'none', padding: '18px 44px',
               fontSize: '11px', fontWeight: 700,
+              width: isMobile ? '100%' : 'auto',
+              boxSizing: 'border-box',
               letterSpacing: '0.3em', textTransform: 'uppercase',
               fontFamily: 'Inter, sans-serif', borderRadius: '2px',
               boxShadow: '0 0 40px rgba(204,0,0,0.3)',

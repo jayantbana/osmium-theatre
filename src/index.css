@@ -109,3 +109,9 @@ body {
 .reveal-scale {
   animation: reveal-scale 0.6s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
+
+@media (max-width: 768px) {
+  .acts-panel {
+    grid-template-columns: 1fr !important;
+  }
+}

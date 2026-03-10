@@ -1,7 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useReveal, useStaggerReveal } from '../hooks/useReveal';
-import { useIsMobile } from '../hooks/useIsMobile';
 
 const acts = [
   {
@@ -60,7 +59,13 @@ export default function Acts() {
   const [active, setActive] = useState(0);
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
-  const isMobile = useIsMobile();
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
+  }, []);
   const [labelRef, labelVisible] = useReveal(0.2);
   const [titleRef, titleVisible] = useReveal(0.2);
   const [listRef, listTriggered, listDelays] = useStaggerReveal(acts.length, 0, 110);
@@ -133,89 +138,77 @@ export default function Acts() {
       {/* Split panel */}
       <div style={{
         display: 'grid',
-        gridTemplateColumns: isMobile ? '1fr' : '320px 1fr',
+        gridTemplateColumns: isMobile ? '1fr' : '280px 1fr',
         minHeight: isMobile ? 'auto' : '600px',
-        borderTop: '1px solid rgba(255,255,255,0.05)',
-        borderBottom: '1px solid rgba(255,255,255,0.05)',
+        border: '1px solid rgba(255,255,255,0.05)',
+        borderTop: 'none',
       }}>
 
         {/* LEFT — Act selector */}
-        <div
-          ref={listRef}
-          style={{
-            borderRight: '1px solid rgba(255,255,255,0.05)',
-            background: '#0E0E0E',
-          }}>
+        <div style={{
+          borderRight: isMobile ? 'none' : '1px solid rgba(255,255,255,0.05)',
+          borderBottom: isMobile ? '1px solid rgba(255,255,255,0.05)' : 'none',
+          background: '#0E0E0E',
+          display: 'flex',
+          flexDirection: isMobile ? 'row' : 'column',
+          overflowX: isMobile ? 'auto' : 'visible',
+        }}>
           {acts.map((a, i) => (
             <button
               key={a.num}
               onClick={() => switchAct(i)}
               style={{
-                width: '100%', display: 'flex',
-                alignItems: 'center', gap: '20px',
-                padding: '28px 32px',
-                background: active === i
-                  ? 'rgba(204,0,0,0.08)'
-                  : 'transparent',
+                display: 'flex',
+                alignItems: 'center',
+                gap: isMobile ? '8px' : '20px',
+                padding: isMobile ? '16px 20px' : '28px 32px',
+                background: active === i ? 'rgba(204,0,0,0.08)' : 'transparent',
                 border: 'none',
-                borderBottom: '1px solid rgba(255,255,255,0.04)',
-                borderLeft: active === i
-                  ? '2px solid #CC0000'
-                  : '2px solid transparent',
-                cursor: 'pointer', textAlign: 'left',
+                borderBottom: isMobile ? 'none' : '1px solid rgba(255,255,255,0.04)',
+                borderRight: isMobile ? '1px solid rgba(255,255,255,0.04)' : 'none',
+                borderLeft: !isMobile && active === i ? '2px solid #CC0000' : '2px solid transparent',
+                borderTop: isMobile && active === i ? '2px solid #CC0000' : isMobile ? '2px solid transparent' : 'none',
+                cursor: 'pointer',
+                textAlign: 'left',
                 transition: 'all 0.25s ease',
-                opacity: listTriggered ? 1 : 0,
-                animation: listTriggered
-                  ? `reveal-up 0.6s cubic-bezier(0.22,1,0.36,1) ${listDelays[i]}ms both`
-                  : 'none',
-              }}
-              onMouseEnter={e => {
-                if (active !== i) e.currentTarget.style.background = 'rgba(255,255,255,0.02)';
-              }}
-              onMouseLeave={e => {
-                if (active !== i) e.currentTarget.style.background = 'transparent';
+                flexShrink: 0,
+                whiteSpace: isMobile ? 'nowrap' : 'normal',
               }}
             >
-              {/* Roman numeral */}
               <span style={{
-                fontFamily: "'Playfair Display', serif",
+                fontFamily: "'Cormorant', serif",
                 fontWeight: 400, fontStyle: 'italic',
-                fontSize: '22px',
+                fontSize: isMobile ? '16px' : '22px',
                 color: active === i ? '#CC0000' : '#3A3A3A',
                 transition: 'color 0.25s ease',
-                minWidth: '28px',
+                minWidth: isMobile ? 'auto' : '28px',
               }}>
                 {a.num}
               </span>
-
-              <div style={{ flex: 1 }}>
+              <div>
                 <div style={{
-                  fontFamily: "'Playfair Display', serif",
-                  fontWeight: 700, fontSize: '16px',
+                  fontFamily: "'Cormorant', serif",
+                  fontWeight: 700,
+                  fontSize: isMobile ? '13px' : '16px',
                   color: active === i ? '#F5F0E8' : '#6B6B6B',
                   transition: 'color 0.25s ease',
-                  marginBottom: '4px',
+                  marginBottom: '2px',
                 }}>
                   {a.title}
                 </div>
-                <div style={{
-                  fontFamily: 'Inter, sans-serif',
-                  fontSize: '10px', color: active === i ? '#CC0000' : '#3A3A3A',
-                  letterSpacing: '0.2em', textTransform: 'uppercase',
-                  transition: 'color 0.25s ease',
-                }}>
-                  {a.tagline}
-                </div>
+                {!isMobile && (
+                  <div style={{
+                    fontFamily: 'Inter, sans-serif',
+                    fontSize: '10px',
+                    color: active === i ? '#CC0000' : '#3A3A3A',
+                    letterSpacing: '0.2em',
+                    textTransform: 'uppercase',
+                    transition: 'color 0.25s ease',
+                  }}>
+                    {a.tagline}
+                  </div>
+                )}
               </div>
-
-              {/* Active arrow */}
-              {active === i && (
-                <div style={{
-                  width: '20px', height: '1px',
-                  background: '#CC0000',
-                  flexShrink: 0,
-                }} />
-              )}
             </button>
           ))}
         </div>
@@ -230,27 +223,27 @@ export default function Acts() {
 
           {/* Text content */}
           <div style={{
-            padding: '56px 52px',
+            padding: isMobile ? '32px 24px' : '56px 52px',
             display: 'flex', flexDirection: 'column',
             justifyContent: 'space-between',
             background: '#0C0C0C',
           }}>
             <div>
-              {/* Act number watermark */}
               <div style={{
-                fontFamily: "'Playfair Display', serif",
+                fontFamily: "'Cormorant', serif",
                 fontStyle: 'italic', fontWeight: 900,
-                fontSize: '120px', color: 'rgba(204,0,0,0.06)',
-                lineHeight: 1, marginBottom: '-24px',
+                fontSize: isMobile ? '60px' : '120px',
+                color: 'rgba(204,0,0,0.06)',
+                lineHeight: 1, marginBottom: '-12px',
                 userSelect: 'none', pointerEvents: 'none',
               }}>
                 {act.num}
               </div>
 
               <h3 style={{
-                fontFamily: "'Playfair Display', serif",
+                fontFamily: "'Cormorant', serif",
                 fontWeight: 900,
-                fontSize: 'clamp(36px, 4vw, 56px)',
+                fontSize: isMobile ? '36px' : 'clamp(36px, 4vw, 56px)',
                 color: '#F5F0E8', lineHeight: 1,
                 marginBottom: '6px',
               }}>
@@ -259,7 +252,7 @@ export default function Acts() {
 
               <div style={{
                 display: 'flex', alignItems: 'center',
-                gap: '12px', marginBottom: '32px',
+                gap: '12px', marginBottom: '20px',
               }}>
                 <div style={{ width: '28px', height: '1px', background: '#CC0000' }} />
                 <span style={{
@@ -272,9 +265,8 @@ export default function Acts() {
               </div>
 
               <p style={{
-                color: '#D4CFC8',
-                fontSize: '15px', lineHeight: '1.85',
-                marginBottom: '20px',
+                color: '#D4CFC8', fontSize: '14px',
+                lineHeight: '1.85', marginBottom: '16px',
                 fontFamily: 'Inter, sans-serif', fontWeight: 300,
               }}>
                 {act.description}
@@ -290,12 +282,8 @@ export default function Acts() {
             </div>
 
             {/* Bottom */}
-            <div style={{ marginTop: '40px' }}>
-              {/* Meta pills */}
-              <div style={{
-                display: 'flex', flexWrap: 'wrap', gap: '8px',
-                marginBottom: '28px',
-              }}>
+            <div style={{ marginTop: '32px' }}>
+              <div style={{ display: 'flex', flexWrap: 'wrap', gap: '8px', marginBottom: '24px' }}>
                 {act.meta.map(m => (
                   <span key={m} style={{
                     border: '1px solid rgba(184,150,12,0.3)',
@@ -310,39 +298,29 @@ export default function Acts() {
                 ))}
               </div>
 
-              {/* Highlight + CTA */}
               <div style={{
                 borderTop: '1px solid rgba(255,255,255,0.06)',
-                paddingTop: '24px',
+                paddingTop: '20px',
                 display: 'flex', alignItems: 'center',
                 justifyContent: 'space-between', gap: '16px',
                 flexWrap: 'wrap',
               }}>
                 <span style={{
                   color: '#B8960C', fontSize: '12px',
-                  fontWeight: 600, letterSpacing: '0.05em',
-                  fontFamily: 'Inter, sans-serif',
+                  fontWeight: 600, fontFamily: 'Inter, sans-serif',
                 }}>
                   {act.highlight}
                 </span>
                 <a href="/register" style={{
-                  background: 'transparent',
-                  border: '1px solid #CC0000',
+                  background: 'transparent', border: '1px solid #CC0000',
                   color: '#CC0000', textDecoration: 'none',
                   padding: '10px 24px', borderRadius: '2px',
                   fontSize: '10px', letterSpacing: '0.25em',
                   textTransform: 'uppercase', fontWeight: 700,
-                  fontFamily: 'Inter, sans-serif',
-                  transition: 'all 0.2s ease',
+                  fontFamily: 'Inter, sans-serif', transition: 'all 0.2s ease',
                 }}
-                  onMouseEnter={e => {
-                    e.currentTarget.style.background = '#CC0000';
-                    e.currentTarget.style.color = '#fff';
-                  }}
-                  onMouseLeave={e => {
-                    e.currentTarget.style.background = 'transparent';
-                    e.currentTarget.style.color = '#CC0000';
-                  }}
+                  onMouseEnter={e => { e.currentTarget.style.background = '#CC0000'; e.currentTarget.style.color = '#fff'; }}
+                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#CC0000'; }}
                 >
                   Register
                 </a>
@@ -350,100 +328,43 @@ export default function Acts() {
             </div>
           </div>
 
-          {/* Photo panel */}
-          <div style={{
-            position: 'relative', overflow: 'hidden',
-            minHeight: '500px',
-            background: '#141414',
-          }}>
-            <img
-              src={act.images[currentImageIndex]}
-              alt={act.title}
-              onError={e => {
-                e.target.style.display = 'none';
-                e.target.nextSibling.style.display = 'flex';
-              }}
-              style={{
-                position: 'absolute', inset: 0,
-                width: '100%', height: '100%',
-                objectFit: 'cover', opacity: 0.7,
-                transition: 'opacity 0.4s ease',
-              }}
-            />
-
-            {/* Carousel buttons */}
-            {act.images.length > 1 && (
-              <>
-                <button
-                  onClick={() => setCurrentImageIndex((prev) => (prev - 1 + act.images.length) % act.images.length)}
-                  style={{
-                    position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)',
-                    background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%',
-                    width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', zIndex: 10,
-                  }}
-                >
-                  <ChevronLeft size={20} />
-                </button>
-                <button
-                  onClick={() => setCurrentImageIndex((prev) => (prev + 1) % act.images.length)}
-                  style={{
-                    position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
-                    background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%',
-                    width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center',
-                    cursor: 'pointer', zIndex: 10,
-                  }}
-                >
-                  <ChevronRight size={20} />
-                </button>
-              </>
-            )}
-
-            {/* Fallback when no image */}
+          {/* Photo panel — blended into text on mobile */}
+          {isMobile ? (
+            /* Mobile: photo as background blend behind text — already shown above */
+            null
+          ) : (
             <div style={{
-              display: 'none',
-              position: 'absolute', inset: 0,
-              alignItems: 'center', justifyContent: 'center',
-              flexDirection: 'column', gap: '12px',
-              background: '#141414',
+              position: 'relative', overflow: 'hidden',
+              minHeight: '500px', background: '#141414',
             }}>
-              <span style={{
-                fontFamily: "'Playfair Display', serif",
-                fontStyle: 'italic', fontWeight: 900,
-                fontSize: '80px', color: 'rgba(204,0,0,0.15)',
-              }}>
-                {act.num}
-              </span>
-              <span style={{
-                color: '#3A3A3A', fontSize: '10px',
-                letterSpacing: '0.3em', textTransform: 'uppercase',
-                fontFamily: 'Inter, sans-serif',
-              }}>
-                Add photo to /images/{act.title.toLowerCase().replace(' ', '-')}.jpg
-              </span>
-            </div>
-
-            {/* Dark gradient over photo */}
-            <div style={{
-              position: 'absolute', inset: 0,
-              background: 'linear-gradient(135deg, rgba(12,12,12,0.4) 0%, rgba(12,12,12,0.1) 100%)',
-            }} />
-
-            {/* Act title overlay on photo */}
-            <div style={{
-              position: 'absolute', bottom: '32px', left: '32px',
-              right: '32px',
-            }}>
+              <img
+                src={act.images[currentImageIndex]}
+                alt={act.title}
+                onError={e => e.target.style.opacity = 0}
+                style={{
+                  position: 'absolute', inset: 0,
+                  width: '100%', height: '100%',
+                  objectFit: 'cover', opacity: 0.7,
+                  transition: 'opacity 0.4s ease',
+                }}
+              />
               <div style={{
-                fontFamily: "'Playfair Display', serif",
-                fontStyle: 'italic', fontWeight: 900,
-                fontSize: '42px', color: 'rgba(245,240,232,0.12)',
-                lineHeight: 1,
+                position: 'absolute', inset: 0,
+                background: 'linear-gradient(135deg, rgba(12,12,12,0.4) 0%, rgba(12,12,12,0.1) 100%)',
+              }} />
+              <div style={{
+                position: 'absolute', bottom: '32px', left: '32px', right: '32px',
               }}>
-                {act.title}
+                <div style={{
+                  fontFamily: "'Cormorant', serif",
+                  fontStyle: 'italic', fontWeight: 900,
+                  fontSize: '42px', color: 'rgba(245,240,232,0.12)', lineHeight: 1,
+                }}>
+                  {act.title}
+                </div>
               </div>
             </div>
-          </div>
+          )}
         </div>
       </div>
     </section>

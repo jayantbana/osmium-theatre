@@ -57,9 +57,9 @@ export default function IlhaamTeaser() {
   const [active, setActive] = useState(0);
   const [progress, setProgress] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
   const timerRef = useRef(null);
   const progressRef = useRef(null);
-  const isMobile = useIsMobile();
   const [headerRef, headerVisible] = useReveal(0.15);
   const [infoRef, infoVisible] = useReveal(0.15);
   const [listRef, listTriggered, listDelays] = useStaggerReveal(events.length, 100, 120);
@@ -98,6 +98,12 @@ export default function IlhaamTeaser() {
       clearInterval(progressInterval);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  useEffect(() => {
+    const handleResize = () => setIsMobile(window.innerWidth < 768);
+    window.addEventListener('resize', handleResize);
+    return () => window.removeEventListener('resize', handleResize);
   }, []);
 
   const ev = events[active];
@@ -185,7 +191,7 @@ export default function IlhaamTeaser() {
             ref={infoRef}
             style={{
               display: 'flex', flexDirection: 'column', gap: '10px',
-              alignItems: 'flex-end',
+              alignItems: isMobile ? 'flex-start' : 'flex-end',
               opacity: infoVisible ? 1 : 0,
               animation: infoVisible ? 'reveal-right 0.8s cubic-bezier(0.22,1,0.36,1) 0.15s both' : 'none',
             }}>
@@ -220,7 +226,8 @@ export default function IlhaamTeaser() {
         <div style={{
           display: 'grid',
           gridTemplateColumns: isMobile ? '1fr' : '1fr 380px',
-          gap: '48px', alignItems: 'start',
+          gap: isMobile ? '40px' : '48px',
+          alignItems: 'start',
         }}>
 
           {/* Main event display */}
@@ -232,8 +239,9 @@ export default function IlhaamTeaser() {
             <div style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: 'italic', fontWeight: 900,
-              fontSize: '100px', color: 'rgba(204,0,0,0.07)',
-              lineHeight: 1, marginBottom: '-20px',
+              fontSize: isMobile ? '60px' : '100px',
+              color: 'rgba(204,0,0,0.07)',
+              lineHeight: 1, marginBottom: '-16px',
               userSelect: 'none',
             }}>
               {ev.num}
@@ -242,7 +250,7 @@ export default function IlhaamTeaser() {
             <h3 style={{
               fontFamily: "'Playfair Display', serif",
               fontWeight: 900,
-              fontSize: 'clamp(36px, 5vw, 60px)',
+              fontSize: isMobile ? '36px' : 'clamp(36px, 5vw, 60px)',
               color: '#F5F0E8', lineHeight: 1,
               marginBottom: '8px',
             }}>
@@ -251,7 +259,7 @@ export default function IlhaamTeaser() {
 
             <div style={{
               display: 'flex', alignItems: 'center', gap: '12px',
-              marginBottom: '28px',
+              marginBottom: '20px',
             }}>
               <div style={{ width: '28px', height: '1px', background: '#CC0000' }} />
               <span style={{
@@ -264,30 +272,31 @@ export default function IlhaamTeaser() {
             </div>
 
             <p style={{
-              color: '#9CA3AF', fontSize: '16px',
+              color: '#9CA3AF', fontSize: '15px',
               lineHeight: '1.8', fontWeight: 300,
               fontFamily: 'Inter, sans-serif',
-              maxWidth: '480px', marginBottom: '40px',
+              maxWidth: '480px', marginBottom: '32px',
             }}>
               {ev.desc}
             </p>
 
-            {/* Stats row */}
+            {/* Stats row — stack on mobile */}
             <div style={{
-              display: 'flex', gap: '0',
-              borderTop: '1px solid rgba(255,255,255,0.06)',
-              borderBottom: '1px solid rgba(255,255,255,0.06)',
-              marginBottom: '40px',
+              display: 'grid',
+              gridTemplateColumns: isMobile ? '1fr 1fr' : 'repeat(4, 1fr)',
+              gap: '1px',
+              background: 'rgba(255,255,255,0.06)',
+              marginBottom: '32px',
             }}>
               {[
                 { label: 'Prize', value: ev.prize, gold: true },
                 { label: 'Registration', value: ev.reg },
                 { label: 'Team Size', value: ev.team },
                 { label: 'Time', value: ev.time },
-              ].map((s, i) => (
+              ].map((s) => (
                 <div key={s.label} style={{
-                  flex: 1, padding: '20px 24px',
-                  borderRight: i < 3 ? '1px solid rgba(255,255,255,0.06)' : 'none',
+                  background: '#080808',
+                  padding: isMobile ? '16px 16px' : '20px 24px',
                 }}>
                   <div style={{
                     color: '#3A3A3A', fontSize: '9px',
@@ -298,7 +307,7 @@ export default function IlhaamTeaser() {
                   </div>
                   <div style={{
                     fontFamily: "'Playfair Display', serif",
-                    fontWeight: 700, fontSize: '16px',
+                    fontWeight: 700, fontSize: '15px',
                     color: s.gold ? '#B8960C' : '#F5F0E8',
                   }}>
                     {s.value}
@@ -310,120 +319,143 @@ export default function IlhaamTeaser() {
             {/* Progress bar */}
             <div style={{
               height: '1px', background: 'rgba(255,255,255,0.08)',
-              marginBottom: '32px', position: 'relative',
+              marginBottom: '24px', position: 'relative',
             }}>
               <div style={{
                 position: 'absolute', left: 0, top: 0, height: '100%',
-                background: '#CC0000',
-                width: `${progress}%`,
+                background: '#CC0000', width: `${progress}%`,
                 transition: 'width 0.05s linear',
               }} />
             </div>
           </div>
 
-          {/* Event selector list */}
-          <div ref={listRef} style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
+          {/* Event selector — horizontal scroll on mobile */}
+          <div style={{
+            display: 'flex',
+            flexDirection: isMobile ? 'row' : 'column',
+            gap: '0',
+            overflowX: isMobile ? 'auto' : 'visible',
+            paddingBottom: isMobile ? '8px' : '0',
+          }}>
             {events.map((e, i) => (
               <button
                 key={e.num}
                 onClick={() => goTo(i)}
                 style={{
-                  display: 'flex', alignItems: 'center', gap: '16px',
-                  padding: '20px 0',
+                  display: 'flex', alignItems: 'center', gap: '12px',
+                  padding: isMobile ? '14px 20px' : '20px 0',
                   background: 'transparent', border: 'none',
-                  borderBottom: '1px solid rgba(255,255,255,0.05)',
+                  borderBottom: isMobile ? 'none' : '1px solid rgba(255,255,255,0.05)',
+                  borderTop: isMobile && active === i ? '2px solid #CC0000' : isMobile ? '2px solid transparent' : 'none',
                   cursor: 'pointer', textAlign: 'left',
                   transition: 'all 0.2s ease',
-                  opacity: listTriggered ? (active === i ? 1 : 0.4) : 0,
-                  animation: listTriggered
-                    ? `reveal-right 0.6s cubic-bezier(0.22,1,0.36,1) ${listDelays[i]}ms both`
-                    : 'none',
+                  opacity: active === i ? 1 : 0.4,
+                  flexShrink: 0,
+                  whiteSpace: isMobile ? 'nowrap' : 'normal',
                 }}
                 onMouseEnter={e => e.currentTarget.style.opacity = 1}
-                onMouseLeave={e => {
-                  if (active !== i) e.currentTarget.style.opacity = 0.4;
-                }}
+                onMouseLeave={e => { if (active !== i) e.currentTarget.style.opacity = 0.4; }}
               >
                 <span style={{
                   fontFamily: "'Playfair Display', serif",
                   fontStyle: 'italic', fontWeight: 400,
-                  fontSize: '18px',
+                  fontSize: '16px',
                   color: active === i ? '#CC0000' : '#3A3A3A',
-                  minWidth: '28px',
-                  transition: 'color 0.2s',
+                  minWidth: '24px', transition: 'color 0.2s',
                 }}>
                   {e.num}
                 </span>
                 <div>
                   <div style={{
                     fontFamily: "'Playfair Display', serif",
-                    fontWeight: 700, fontSize: '15px',
+                    fontWeight: 700, fontSize: '14px',
                     color: active === i ? '#F5F0E8' : '#6B6B6B',
                     transition: 'color 0.2s',
                   }}>
                     {e.title}
                   </div>
-                  <div style={{
-                    fontFamily: 'Inter, sans-serif',
-                    fontSize: '10px', color: '#3A3A3A',
-                    letterSpacing: '0.2em', textTransform: 'uppercase',
-                    marginTop: '3px',
-                  }}>
-                    {e.time} · {e.prize}
-                  </div>
+                  {!isMobile && (
+                    <div style={{
+                      fontFamily: 'Inter, sans-serif',
+                      fontSize: '10px', color: '#3A3A3A',
+                      letterSpacing: '0.2em', textTransform: 'uppercase',
+                      marginTop: '3px',
+                    }}>
+                      {e.time} · {e.prize}
+                    </div>
+                  )}
                 </div>
-                {active === i && (
+                {active === i && !isMobile && (
                   <div style={{
-                    marginLeft: 'auto',
-                    width: '20px', height: '1px',
+                    marginLeft: 'auto', width: '20px', height: '1px',
                     background: '#CC0000', flexShrink: 0,
                   }} />
                 )}
               </button>
             ))}
 
-            {/* CTA */}
-            <div style={{ paddingTop: '32px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
-              <Link to="/ilhaam" style={{
-                background: '#CC0000', color: '#F5F0E8',
-                textDecoration: 'none', padding: '14px 28px',
-                fontSize: '10px', fontWeight: 700,
-                letterSpacing: '0.25em', textTransform: 'uppercase',
-                fontFamily: 'Inter, sans-serif',
-                borderRadius: '2px', display: 'flex',
-                alignItems: 'center', justifyContent: 'center', gap: '10px',
-                boxShadow: '0 0 28px rgba(204,0,0,0.3)',
-                transition: 'all 0.2s',
-              }}
-                onMouseEnter={e => e.currentTarget.style.boxShadow = '0 0 40px rgba(204,0,0,0.5)'}
-                onMouseLeave={e => e.currentTarget.style.boxShadow = '0 0 28px rgba(204,0,0,0.3)'}
-              >
-                Full Event Details <ArrowRight size={14} />
-              </Link>
-              <Link to="/register" style={{
-                background: 'transparent',
-                border: '1px solid rgba(245,240,232,0.15)',
-                color: '#F5F0E8', textDecoration: 'none',
-                padding: '14px 28px', fontSize: '10px', fontWeight: 700,
-                letterSpacing: '0.25em', textTransform: 'uppercase',
-                fontFamily: 'Inter, sans-serif',
-                borderRadius: '2px', display: 'block', textAlign: 'center',
-                transition: 'all 0.2s',
-              }}
-                onMouseEnter={e => {
-                  e.currentTarget.style.borderColor = '#CC0000';
-                  e.currentTarget.style.color = '#CC0000';
-                }}
-                onMouseLeave={e => {
-                  e.currentTarget.style.borderColor = 'rgba(245,240,232,0.15)';
-                  e.currentTarget.style.color = '#F5F0E8';
-                }}
-              >
-                Register Now
-              </Link>
-            </div>
+            {/* CTA buttons */}
+            {!isMobile && (
+              <div style={{ paddingTop: '32px', display: 'flex', flexDirection: 'column', gap: '12px' }}>
+                <Link to="/ilhaam" style={{
+                  background: '#CC0000', color: '#F5F0E8',
+                  textDecoration: 'none', padding: '14px 28px',
+                  fontSize: '10px', fontWeight: 700,
+                  letterSpacing: '0.25em', textTransform: 'uppercase',
+                  fontFamily: 'Inter, sans-serif', borderRadius: '2px',
+                  display: 'flex', alignItems: 'center',
+                  justifyContent: 'center', gap: '10px',
+                  boxShadow: '0 0 28px rgba(204,0,0,0.3)',
+                }}>
+                  Full Event Details <ArrowRight size={14} />
+                </Link>
+                <Link to="/register" style={{
+                  background: 'transparent',
+                  border: '1px solid rgba(245,240,232,0.15)',
+                  color: '#F5F0E8', textDecoration: 'none',
+                  padding: '14px 28px', fontSize: '10px', fontWeight: 700,
+                  letterSpacing: '0.25em', textTransform: 'uppercase',
+                  fontFamily: 'Inter, sans-serif', borderRadius: '2px',
+                  display: 'block', textAlign: 'center',
+                }}>
+                  Register Now
+                </Link>
+              </div>
+            )}
           </div>
         </div>
+
+        {/* Mobile CTA buttons — shown below on mobile only */}
+        {isMobile && (
+          <div style={{
+            display: 'flex', gap: '12px', marginTop: '32px',
+            flexDirection: 'column',
+          }}>
+            <Link to="/ilhaam" style={{
+              background: '#CC0000', color: '#F5F0E8',
+              textDecoration: 'none', padding: '16px',
+              fontSize: '10px', fontWeight: 700,
+              letterSpacing: '0.25em', textTransform: 'uppercase',
+              fontFamily: 'Inter, sans-serif', borderRadius: '2px',
+              display: 'flex', alignItems: 'center',
+              justifyContent: 'center', gap: '10px',
+              boxShadow: '0 0 28px rgba(204,0,0,0.3)',
+            }}>
+              Full Event Details <ArrowRight size={14} />
+            </Link>
+            <Link to="/register" style={{
+              background: 'transparent',
+              border: '1px solid rgba(245,240,232,0.15)',
+              color: '#F5F0E8', textDecoration: 'none',
+              padding: '16px', fontSize: '10px', fontWeight: 700,
+              letterSpacing: '0.25em', textTransform: 'uppercase',
+              fontFamily: 'Inter, sans-serif', borderRadius: '2px',
+              display: 'block', textAlign: 'center',
+            }}>
+              Register Now
+            </Link>
+          </div>
+        )}
       </div>
     </section>
   );
