@@ -220,6 +220,7 @@ export default function IlhaamPage() {
                   position: 'absolute', top: 0, left: '-100%',
                   width: '100%', height: '100%',
                   background: 'linear-gradient(90deg, transparent, rgba(184,150,12,0.15), transparent)',
+                  animation: 'shimmer 2.5s infinite',
                   pointerEvents: 'none',
                 }} />
 
@@ -849,6 +850,15 @@ export default function IlhaamPage() {
           </div>
         </div>
       </section>
+
+      {/* Shimmer keyframe */}
+      <style>{`
+        @keyframes shimmer {
+          0%   { left: -100%; }
+          60%  { left: 100%; }
+          100% { left: 100%; }
+        }
+      `}</style>
 
     </div>
   );

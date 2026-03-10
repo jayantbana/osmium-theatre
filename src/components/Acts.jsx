@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useReveal, useStaggerReveal } from '../hooks/useReveal';
 import { useIsMobile } from '../hooks/useIsMobile';
