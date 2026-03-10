@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { ChevronLeft, ChevronRight } from 'lucide-react';
-import { useReveal, useStaggerReveal } from '../hooks/useReveal';
+import { useReveal } from '../hooks/useReveal';
 
 const acts = [
   {
@@ -68,7 +67,6 @@ export default function Acts() {
   }, []);
   const [labelRef, labelVisible] = useReveal(0.2);
   const [titleRef, titleVisible] = useReveal(0.2);
-  const [listRef, listTriggered, listDelays] = useStaggerReveal(acts.length, 0, 110);
 
   const switchAct = (i) => {
     if (i === active) return;

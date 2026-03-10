@@ -1,8 +1,7 @@
 import React, { useState, useEffect, useRef, useCallback } from 'react';
 import { Link } from 'react-router-dom';
 import { ArrowRight, Calendar, MapPin, Award } from 'lucide-react';
-import { useReveal, useStaggerReveal } from '../hooks/useReveal';
-import { useIsMobile } from '../hooks/useIsMobile';
+import { useReveal } from '../hooks/useReveal';
 
 const events = [
   {
@@ -62,7 +61,6 @@ export default function IlhaamTeaser() {
   const progressRef = useRef(null);
   const [headerRef, headerVisible] = useReveal(0.15);
   const [infoRef, infoVisible] = useReveal(0.15);
-  const [listRef, listTriggered, listDelays] = useStaggerReveal(events.length, 100, 120);
 
   const goTo = useCallback((i) => {
     setTransitioning(true);
