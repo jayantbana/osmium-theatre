@@ -10,10 +10,10 @@ const events = [
     title: 'Nukkad Natak',
     subtitle: 'Street Theatre Competition',
     time: '9:30 AM',
-    prize: '₹10,000',
+    prize: '₹15,000',
     reg: '₹1,300 / team',
     team: '8–20 Members',
-    image: '/images/nukkad.jpg',
+    images: ['/images/nukkad-natak.jpg'],
     desc: 'Carrier of change — street theatre addressing the social pulse of our generation.',
   },
   {
@@ -24,7 +24,7 @@ const events = [
     prize: '₹1,500',
     reg: '₹100 / person',
     team: 'Individual',
-    image: '/images/monoact.jpg',
+    images: ['/images/monoact.jpg'],
     desc: 'One performer. One stage. The rawest form of theatrical expression.',
   },
   {
@@ -35,7 +35,7 @@ const events = [
     prize: 'Free Entry',
     reg: 'Open to All',
     team: 'OSMIUM Ensemble',
-    image: '/images/stage-play.jpg',
+    images: ['/images/stage-play.png'],
     desc: 'OSMIUM\'s flagship production — a powerful evening of storytelling and purpose.',
   },
   {
@@ -46,7 +46,7 @@ const events = [
     prize: 'Free Entry',
     reg: 'Open to All',
     team: 'All Artists Welcome',
-    image: '/images/hero-stage.jpg',
+    images: ['/images/hero-stage.jpg'],
     desc: 'Learn, interact, and explore the craft with hands-on training and open dialogue.',
   },
 ];
@@ -116,7 +116,7 @@ export default function IlhaamTeaser() {
         opacity: transitioning ? 0 : 1,
       }}>
         <img
-          src={ev.image}
+          src={ev.images[0]}
           alt=""
           onError={e => e.target.style.opacity = 0}
           style={{

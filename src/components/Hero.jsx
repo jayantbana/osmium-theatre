@@ -158,13 +158,31 @@ export default function Hero() {
         }}>
           <div style={{ width: '1px', height: '48px', background: '#CC0000' }} />
           <div>
+            {/* The Theatre Club */}
             <div style={{
-              fontFamily: "'Playfair Display', serif",
-              fontStyle: 'italic', color: '#F5F0E8',
-              fontSize: 'clamp(16px, 2vw, 22px)',
-              fontWeight: 400, letterSpacing: '0.05em',
+              fontFamily: "'Cormorant Garamond', serif",
+              fontStyle: 'italic',
+              fontWeight: 300,
+              fontSize: 'clamp(18px, 2.5vw, 28px)',
+              color: 'rgba(245,240,232,0.35)',
+              letterSpacing: '0.15em',
+              marginBottom: '12px',
             }}>
               The Theatre Club
+            </div>
+
+            {/* Hindi Quote */}
+            <div style={{
+              fontFamily: "'Noto Sans Devanagari', sans-serif",
+              fontWeight: 400,
+              fontSize: 'clamp(14px, 1.8vw, 20px)',
+              lineHeight: 1.6,
+              letterSpacing: '0.05em',
+              marginBottom: '32px',
+              color: '#F5F0E8',
+            }}>
+              है दिल में जोश इरादों में दम आया आया{' '}
+              <span style={{ color: '#CC0000', fontWeight: 700 }}>OSMIUM</span>
             </div>
             <div style={{
               color: '#6B6B6B', fontSize: '11px',

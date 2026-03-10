@@ -11,11 +11,11 @@ const events = [
     tagline: 'Street Theatre Competition',
     time: '9:30 AM',
     date: '30 March 2026',
-    prize: '₹10,000',
+    prize: '₹15,000',
     reg: '₹1,300 / team',
     team: '8–20 Members',
     duration: '15–25 Minutes',
-    image: '/images/nukkad.jpg',
+    image: '/images/nukkad-natak.jpg',
     desc: 'Nukkad Natak has been the carrier of change in India since the very beginning. This event is about creating awareness of social problems that plague our soil and bringing about realization in our youth.',
     rules: [
       'Team size must be between 8 and 20 members',
@@ -84,7 +84,7 @@ export default function IlhaamPage() {
         {/* Background photo */}
         <div style={{ position: 'absolute', inset: 0, overflow: 'hidden' }}>
           <img
-            src="/images/ilhaam-bg.jpg"
+            src="/images/hero-stage.jpg"
             alt=""
             onError={e => e.target.style.opacity = 0}
             style={{
@@ -150,10 +150,11 @@ export default function IlhaamPage() {
               padding: '32px 0 40px',
               borderTop: '1px solid rgba(255,255,255,0.06)',
               marginTop: '24px',
-              flexWrap: 'wrap', gap: '20px',
+              flexWrap: 'wrap', gap: '24px',
               opacity: heroMetaVis ? 1 : 0,
               animation: heroMetaVis ? 'reveal-up 0.7s cubic-bezier(0.22,1,0.36,1) 0.25s both' : 'none',
             }}>
+            {/* Left — tagline */}
             <div style={{
               fontFamily: "'Cormorant Garamond', serif",
               fontStyle: 'italic', fontWeight: 300,
@@ -162,7 +163,13 @@ export default function IlhaamPage() {
             }}>
               A celebration of imagination, culture, and artistic expression.
             </div>
-            <div style={{ display: 'flex', gap: '32px', flexWrap: 'wrap' }}>
+
+            {/* Right — meta + download button */}
+            <div style={{
+              display: 'flex', alignItems: 'center',
+              gap: '32px', flexWrap: 'wrap',
+            }}>
+              {/* Meta info */}
               {[
                 { Icon: Calendar, text: '30 March 2026' },
                 { Icon: MapPin, text: 'UIET, Panjab University' },
@@ -177,6 +184,59 @@ export default function IlhaamPage() {
                   {text}
                 </div>
               ))}
+
+              {/* Download Brochure Button */}
+              <a
+                href="/brochure/ilhaam-2026-brochure.pdf"
+                download="ILHAAM-2026-Brochure.pdf"
+                style={{
+                  display: 'flex', alignItems: 'center', gap: '10px',
+                  padding: '13px 28px',
+                  background: 'transparent',
+                  border: '1px solid #B8960C',
+                  color: '#B8960C',
+                  textDecoration: 'none',
+                  fontSize: '10px', fontWeight: 700,
+                  letterSpacing: '0.3em', textTransform: 'uppercase',
+                  fontFamily: 'Inter, sans-serif',
+                  borderRadius: '2px',
+                  position: 'relative', overflow: 'hidden',
+                  transition: 'all 0.3s ease',
+                  boxShadow: '0 0 20px rgba(184,150,12,0.15), inset 0 0 20px rgba(184,150,12,0.03)',
+                }}
+                onMouseEnter={e => {
+                  e.currentTarget.style.background = '#B8960C';
+                  e.currentTarget.style.color = '#0C0C0C';
+                  e.currentTarget.style.boxShadow = '0 0 40px rgba(184,150,12,0.5), inset 0 0 20px rgba(184,150,12,0.1)';
+                }}
+                onMouseLeave={e => {
+                  e.currentTarget.style.background = 'transparent';
+                  e.currentTarget.style.color = '#B8960C';
+                  e.currentTarget.style.boxShadow = '0 0 20px rgba(184,150,12,0.15), inset 0 0 20px rgba(184,150,12,0.03)';
+                }}
+              >
+                {/* Animated shimmer line */}
+                <div style={{
+                  position: 'absolute', top: 0, left: '-100%',
+                  width: '100%', height: '100%',
+                  background: 'linear-gradient(90deg, transparent, rgba(184,150,12,0.15), transparent)',
+                  pointerEvents: 'none',
+                }} />
+
+                {/* Download icon SVG */}
+                <svg
+                  width="14" height="14" viewBox="0 0 24 24"
+                  fill="none" stroke="currentColor"
+                  strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"
+                  style={{ flexShrink: 0 }}
+                >
+                  <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" />
+                  <polyline points="7 10 12 15 17 10" />
+                  <line x1="12" y1="15" x2="12" y2="3" />
+                </svg>
+
+                Download Brochure
+              </a>
             </div>
           </div>
         </div>
@@ -250,7 +310,7 @@ export default function IlhaamPage() {
       }}>
         <div style={{ position: 'absolute', inset: 0 }}>
           <img
-            src="/images/stage-play.jpg"
+            src="/images/stage-play.png"
             alt=""
             onError={e => e.target.style.opacity = 0}
             style={{

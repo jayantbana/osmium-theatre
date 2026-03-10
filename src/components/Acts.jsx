@@ -1,4 +1,5 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { ChevronLeft, ChevronRight } from 'lucide-react';
 import { useReveal, useStaggerReveal } from '../hooks/useReveal';
 import { useIsMobile } from '../hooks/useIsMobile';
 
@@ -11,7 +12,7 @@ const acts = [
     detail: 'OSMIUM stage plays are the pinnacle of our creative expression. Each production undergoes weeks of rehearsal, script development, and design — resulting in a performance that moves audiences long after the curtain falls. Our latest production "ACID" premieres at ILHAAM 2026.',
     highlight: 'ILHAAM 2026 — "ACID"',
     meta: ['Full Ensemble', 'Original Scripts', 'Set & Costumes'],
-    image: '/images/stage-play.jpg',
+    images: ['/images/stage-play.png'],
   },
   {
     num: 'II',
@@ -21,7 +22,7 @@ const acts = [
     detail: 'Monoact is where the bravest performers shine. Armed with nothing but their body, voice, and imagination, a monoactor must hold an entire audience for up to 6 minutes. At ILHAAM 2026, the finest wins the title of Solo Acting God.',
     highlight: 'Prize ₹1,500 · Registration ₹100',
     meta: ['Solo Performance', '3–6 Minutes', 'Props Allowed'],
-    image: '/images/monoact.jpg',
+    images: ['/images/monoact.jpg'],
   },
   {
     num: 'III',
@@ -31,7 +32,7 @@ const acts = [
     detail: 'Mime is one of the oldest and purest theatrical forms. Our performers train rigorously in physical storytelling — every movement deliberate, every pause meaningful. A mime performance by OSMIUM leaves audiences in awe.',
     highlight: 'Physical Theatre · No Dialogue',
     meta: ['No Dialogue', 'Physical Theatre', 'Character Work'],
-    image: '/images/mime.jpg',
+    images: ['/images/monoact.jpg', '/images/monoact2.png'],
   },
   {
     num: 'IV',
@@ -39,9 +40,9 @@ const acts = [
     tagline: 'Theatre of the Streets',
     description: 'Street theatre rooted in social consciousness. Nukkad Natak uses performance to spark dialogue on pressing issues — performed without boundaries, reaching every corner.',
     detail: 'Nukkad Natak has been the carrier of change in India since the beginning. Teams of 8–20 members take to the open stage with live music, props, and conviction — addressing social issues that define our generation.',
-    highlight: 'Prize ₹10,000 · Registration ₹1,300/team',
+    highlight: 'Prize ₹15,000 · Registration ₹1,300/team',
     meta: ['8–20 Members', 'Live Music Only', '15–25 Minutes'],
-    image: '/images/nukkad.jpg',
+    images: ['/images/nukkad-natak.jpg'],
   },
   {
     num: 'V',
@@ -51,12 +52,13 @@ const acts = [
     detail: 'Skits are theatre distilled to its most energetic form. A tight script, sharp ensemble, and brilliant comic timing — that\'s all it takes to steal the show. OSMIUM skits are known for their wit, timing, and cultural resonance.',
     highlight: 'Team Format · High Energy',
     meta: ['Team Format', 'High Energy', 'Humour & Satire'],
-    image: '/images/skits.jpg',
+    images: ['/images/skit.jpg'],
   },
 ];
 
 export default function Acts() {
   const [active, setActive] = useState(0);
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const isMobile = useIsMobile();
   const [labelRef, labelVisible] = useReveal(0.2);
@@ -68,6 +70,7 @@ export default function Acts() {
     setTransitioning(true);
     setTimeout(() => {
       setActive(i);
+      setCurrentImageIndex(0);
       setTransitioning(false);
     }, 200);
   };
@@ -354,7 +357,7 @@ export default function Acts() {
             background: '#141414',
           }}>
             <img
-              src={act.image}
+              src={act.images[currentImageIndex]}
               alt={act.title}
               onError={e => {
                 e.target.style.display = 'none';
@@ -367,6 +370,34 @@ export default function Acts() {
                 transition: 'opacity 0.4s ease',
               }}
             />
+
+            {/* Carousel buttons */}
+            {act.images.length > 1 && (
+              <>
+                <button
+                  onClick={() => setCurrentImageIndex((prev) => (prev - 1 + act.images.length) % act.images.length)}
+                  style={{
+                    position: 'absolute', left: '10px', top: '50%', transform: 'translateY(-50%)',
+                    background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%',
+                    width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer', zIndex: 10,
+                  }}
+                >
+                  <ChevronLeft size={20} />
+                </button>
+                <button
+                  onClick={() => setCurrentImageIndex((prev) => (prev + 1) % act.images.length)}
+                  style={{
+                    position: 'absolute', right: '10px', top: '50%', transform: 'translateY(-50%)',
+                    background: 'rgba(0,0,0,0.5)', color: 'white', border: 'none', borderRadius: '50%',
+                    width: '40px', height: '40px', display: 'flex', alignItems: 'center', justifyContent: 'center',
+                    cursor: 'pointer', zIndex: 10,
+                  }}
+                >
+                  <ChevronRight size={20} />
+                </button>
+              </>
+            )}
 
             {/* Fallback when no image */}
             <div style={{

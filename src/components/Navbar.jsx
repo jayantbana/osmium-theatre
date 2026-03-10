@@ -50,13 +50,16 @@ export default function Navbar() {
 
         {/* Logo */}
         <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
-          <div style={{
-            width: '38px', height: '38px', borderRadius: '50%',
-            background: '#DC143C', display: 'flex', alignItems: 'center', justifyContent: 'center',
-            boxShadow: '0 0 16px rgba(220,20,60,0.4)',
-          }}>
-            <span style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, color: '#fff', fontSize: '18px' }}>O</span>
-          </div>
+          <img
+            src="/images/logo.png"
+            alt="OSMIUM Logo"
+            style={{
+              height: '42px',
+              width: 'auto',
+              objectFit: 'contain',
+              display: 'block',
+            }}
+          />
           <div>
             <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, color: '#fff', fontSize: '18px', letterSpacing: '0.15em', lineHeight: 1 }}>
               OSMIUM

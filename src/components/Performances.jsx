@@ -13,7 +13,7 @@ const upcoming = [
     venue: 'UIET, Panjab University',
     desc: 'OSMIUM\'s exclusive flagship production at ILHAAM 2026. A powerful evening of storytelling, heartfelt emotions, and impactful expression. As the curtains rise, OSMIUM takes the audience on a captivating theatrical journey filled with creativity, passion, and purpose.',
     status: 'UPCOMING',
-    image: '/images/stage-play.jpg',
+    images: ['/images/stage-play.png'],
   },
 ];
 
@@ -26,7 +26,7 @@ const past = [
     type: 'Performance Archive',
     desc: 'Watch highlights, behind-the-scenes clips, and full performance reels from our previous productions on Instagram.',
     link: 'https://www.instagram.com/osmium_osm/',
-    image: '/images/hero-stage-2.jpg',
+    images: ['/images/hero-stage-2.jpg'],
   },
   {
     id: 'past-2',
@@ -36,7 +36,7 @@ const past = [
     type: 'Performance Archive',
     desc: 'Explore our formative productions and the performances that shaped OSMIUM\'s identity on stage.',
     link: 'https://www.instagram.com/osmium_osm/',
-    image: '/images/hero-stage.jpg',
+    images: ['/images/hero-stage.jpg'],
   },
 ];
 
@@ -207,7 +207,7 @@ export default function Performances() {
                 minHeight: '400px', background: '#141414',
               }}>
                 <img
-                  src={p.image}
+                  src={p.images[0]}
                   alt={p.title}
                   onError={e => e.target.style.opacity = 0}
                   style={{
@@ -284,7 +284,7 @@ export default function Performances() {
                   transition: 'opacity 0.4s ease',
                 }}>
                   <img
-                    src={p.image}
+                    src={p.images[0]}
                     alt=""
                     onError={e => e.target.style.opacity = 0}
                     style={{
