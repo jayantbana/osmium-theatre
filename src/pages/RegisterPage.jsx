@@ -609,7 +609,7 @@ export default function Register() {
 
             {/* Google Forms button */}
             <a
-              href="https://forms.gle/your-google-form-link"
+              href="https://docs.google.com/forms/d/e/1FAIpQLSf7qHGE-VEdK8LlG6SjRbaFowzye-c0d3719Fh2UTBv2CcrEw/viewform?usp=publish-editor"
               target="_blank"
               rel="noreferrer"
               style={{
