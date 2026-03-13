@@ -89,13 +89,13 @@ export default function IlhaamPage() {
             onError={e => e.target.style.opacity = 0}
             style={{
               width: '100%', height: '100%',
-              objectFit: 'cover', opacity: 0.04,
+              objectFit: 'cover', opacity: 0.55,
               filter: 'grayscale(100%)',
             }}
           />
           <div style={{
             position: 'absolute', inset: 0,
-            background: 'linear-gradient(180deg, rgba(12,12,12,0.3) 0%, #0C0C0C 90%)',
+            background: 'linear-gradient(180deg, rgba(12,12,12,0.55) 0%, #0C0C0C 90%)',
           }} />
         </div>
 
@@ -173,9 +173,9 @@ export default function IlhaamPage() {
               gap: isMobile ? '16px' : '32px', flexWrap: 'wrap',
             }}>
               {[
-                { Icon: Calendar, text: '30 March 2026' },
+                { Icon: Calendar, text: '29–30 March 2026' },
                 { Icon: MapPin, text: 'UIET, Panjab University' },
-                { Icon: Award, text: 'Prize Pool ₹11,500' },
+                { Icon: Award, text: 'Prize Pool ₹15,000' },
               ].map(({ Icon, text }) => (
                 <div key={text} style={{
                   display: 'flex', alignItems: 'center', gap: '8px',

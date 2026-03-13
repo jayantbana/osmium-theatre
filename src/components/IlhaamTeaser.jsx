@@ -30,7 +30,7 @@ const events = [
     num: '03',
     title: 'Stage Play — ACID',
     subtitle: 'Exclusive by OSMIUM',
-    time: 'Evening',
+    time: '29 March',
     prize: 'Free Entry',
     reg: 'Open to All',
     team: 'OSMIUM Ensemble',
@@ -129,11 +129,15 @@ export default function IlhaamTeaser() {
             filter: 'grayscale(100%)',
           }}
         />
+        <div style={{
+          position: 'absolute', inset: 0,
+          background: 'rgba(8,8,8,0.45)',
+        }} />
       </div>
 
       <div style={{
         maxWidth: '1280px', margin: '0 auto',
-        padding: isMobile ? '60px 24px' : '100px 48px',
+        padding: isMobile ? '40px 24px' : '60px 48px',
         position: 'relative', zIndex: 2,
       }}>
 
@@ -142,7 +146,7 @@ export default function IlhaamTeaser() {
           display: 'flex', alignItems: isMobile ? 'flex-start' : 'flex-end',
           flexDirection: isMobile ? 'column' : 'row',
           justifyContent: 'space-between',
-          marginBottom: '72px', flexWrap: 'wrap', gap: '24px',
+          marginBottom: isMobile ? '24px' : '40px', flexWrap: 'wrap', gap: '24px',
         }}>
           <div
             ref={headerRef}
@@ -166,7 +170,7 @@ export default function IlhaamTeaser() {
             <h2 style={{
               fontFamily: "'Playfair Display', serif",
               fontWeight: 900,
-              fontSize: 'clamp(64px, 12vw, 120px)',
+              fontSize: 'clamp(36px, 5vw, 64px)',
               background: 'linear-gradient(135deg, #B8960C 0%, #E8C86A 45%, #B8960C 100%)',
               WebkitBackgroundClip: 'text',
               WebkitTextFillColor: 'transparent',
@@ -199,7 +203,7 @@ export default function IlhaamTeaser() {
               fontFamily: 'Inter, sans-serif',
             }}>
               <Calendar size={13} color="#CC0000" />
-              30 March 2026
+              29–30 March 2026
             </div>
             <div style={{
               display: 'flex', alignItems: 'center', gap: '8px',
@@ -215,7 +219,7 @@ export default function IlhaamTeaser() {
               fontFamily: 'Inter, sans-serif',
             }}>
               <Award size={13} color="#B8960C" />
-              Prize Pool ₹11,500
+              Prize Pool ₹15,000
             </div>
           </div>
         </div>
@@ -237,7 +241,7 @@ export default function IlhaamTeaser() {
             <div style={{
               fontFamily: "'Playfair Display', serif",
               fontStyle: 'italic', fontWeight: 900,
-              fontSize: isMobile ? '60px' : '100px',
+              fontSize: isMobile ? '48px' : '72px',
               color: 'rgba(204,0,0,0.07)',
               lineHeight: 1, marginBottom: '-16px',
               userSelect: 'none',
@@ -248,7 +252,7 @@ export default function IlhaamTeaser() {
             <h3 style={{
               fontFamily: "'Playfair Display', serif",
               fontWeight: 900,
-              fontSize: isMobile ? '36px' : 'clamp(36px, 5vw, 60px)',
+              fontSize: isMobile ? '28px' : 'clamp(28px, 3.5vw, 44px)',
               color: '#F5F0E8', lineHeight: 1,
               marginBottom: '8px',
             }}>
@@ -270,10 +274,10 @@ export default function IlhaamTeaser() {
             </div>
 
             <p style={{
-              color: '#9CA3AF', fontSize: '15px',
+              color: '#9CA3AF', fontSize: '13px',
               lineHeight: '1.8', fontWeight: 300,
               fontFamily: 'Inter, sans-serif',
-              maxWidth: '480px', marginBottom: '32px',
+              maxWidth: '480px', marginBottom: '20px',
             }}>
               {ev.desc}
             </p>
@@ -294,7 +298,7 @@ export default function IlhaamTeaser() {
               ].map((s) => (
                 <div key={s.label} style={{
                   background: '#080808',
-                  padding: isMobile ? '16px 16px' : '20px 24px',
+                  padding: isMobile ? '12px 14px' : '14px 20px',
                 }}>
                   <div style={{
                     color: '#3A3A3A', fontSize: '9px',
@@ -341,7 +345,7 @@ export default function IlhaamTeaser() {
                 onClick={() => goTo(i)}
                 style={{
                   display: 'flex', alignItems: 'center', gap: '12px',
-                  padding: isMobile ? '14px 20px' : '20px 0',
+                  padding: isMobile ? '10px 16px' : '14px 0',
                   background: 'transparent', border: 'none',
                   borderBottom: isMobile ? 'none' : '1px solid rgba(255,255,255,0.05)',
                   borderTop: isMobile && active === i ? '2px solid #CC0000' : isMobile ? '2px solid transparent' : 'none',

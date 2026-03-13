@@ -63,14 +63,16 @@ export default function Hero() {
         transition: 'background 0.05s ease',
       }}>
 
-      {/* ── RIGHT HALF — Photo / Video ───────────────────── */}
+      {/* ── BACKGROUND — Desktop: right half | Mobile: full screen ── */}
       <div style={{
         position: 'absolute',
-        right: 0, top: 0, bottom: 0,
-        width: isMobile ? '100%' : '50%',
+        right: 0,
+        top: 0,
+        bottom: 0,
+        width: isMobile ? '100%' : '50%',   // full width on mobile
         overflow: 'hidden',
+        zIndex: 1,
       }}>
-        {/* Video background — falls back to image */}
         {!videoError ? (
           <video
             autoPlay muted loop playsInline
@@ -79,7 +81,7 @@ export default function Hero() {
               position: 'absolute', inset: 0,
               width: '100%', height: '100%',
               objectFit: 'cover',
-              opacity: isMobile ? 0.30 : 0.70,
+              opacity: 1,
             }}
           >
             <source src="/videos/hero-reel.mp4" type="video/mp4" />
@@ -88,23 +90,36 @@ export default function Hero() {
           <img
             src="/images/hero-stage.jpg"
             alt="OSMIUM Performance"
+            onError={e => e.target.style.opacity = 0}
             style={{
               position: 'absolute', inset: 0,
               width: '100%', height: '100%',
               objectFit: 'cover',
-              opacity: isMobile ? 0.30 : 0.70,
+              opacity: 1,
             }}
           />
         )}
 
+        {/* Desktop — left edge fade into black */}
+        {!isMobile && (
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'linear-gradient(90deg, #0C0C0C 0%, rgba(12,12,12,0.4) 25%, rgba(12,12,12,0.0) 55%)',
+          }} />
+        )}
+
+        {/* Mobile — full dark overlay so text is readable */}
+        {isMobile && (
+          <div style={{
+            position: 'absolute', inset: 0,
+            background: 'rgba(12,12,12,0.72)',
+          }} />
+        )}
+
+        {/* Both — bottom fade */}
         <div style={{
-          position: 'absolute', inset: 0,
-          background: isMobile
-            ? 'linear-gradient(180deg, rgba(12,12,12,0.6) 0%, rgba(12,12,12,0.85) 100%)'
-            : 'linear-gradient(90deg, #0C0C0C 0%, #0C0C0C 20%, rgba(12,12,12,0.85) 38%, rgba(12,12,12,0.0) 65%)',
-        }} />
-        <div style={{
-          position: 'absolute', bottom: 0, left: 0, right: 0, height: '35%',
+          position: 'absolute', bottom: 0, left: 0, right: 0,
+          height: '25%',
           background: 'linear-gradient(0deg, #0C0C0C 0%, transparent 100%)',
         }} />
       </div>
@@ -118,85 +133,6 @@ export default function Hero() {
         display: 'flex', flexDirection: 'column',
         justifyContent: 'center',
       }}>
-
-        {/* Layer 1 — Faint team photo behind left content */}
-        <div style={{
-          position: 'absolute',
-          left: 0, top: 0, bottom: 0,
-          width: '50%',
-          overflow: 'hidden',
-          zIndex: 0,
-          pointerEvents: 'none',
-        }}>
-          <img
-            src="/images/team.jpg"
-            alt=""
-            onError={e => e.target.style.opacity = 0}
-            style={{
-              position: 'absolute', inset: 0,
-              width: '100%', height: '100%',
-              objectFit: 'cover',
-              opacity: 0.05,
-              filter: 'grayscale(100%)',
-            }}
-          />
-          {/* Fade the photo out toward center */}
-          <div style={{
-            position: 'absolute', inset: 0,
-            background: 'linear-gradient(90deg, rgba(12,12,12,0.5) 0%, #0C0C0C 85%)',
-          }} />
-        </div>
-
-        {/* Layer 2 — Red spotlight glow behind title */}
-        <div style={{
-          position: 'absolute',
-          left: '5%', top: '20%',
-          width: '500px', height: '500px',
-          background: 'radial-gradient(ellipse, rgba(204,0,0,0.09) 0%, transparent 65%)',
-          pointerEvents: 'none', zIndex: 0,
-        }} />
-
-        {/* Layer 3 — Vertical decorative theatre lines */}
-        <div style={{
-          position: 'absolute',
-          left: 0, top: 0, bottom: 0,
-          width: '50%',
-          pointerEvents: 'none', zIndex: 0,
-          overflow: 'hidden',
-        }}>
-          {[8, 18, 28, 38].map((left, i) => (
-            <div key={i} style={{
-              position: 'absolute',
-              left: `${left}%`,
-              top: 0, bottom: 0,
-              width: '1px',
-              background: `linear-gradient(180deg, transparent 0%, rgba(204,0,0,${0.04 + i * 0.01}) 30%, rgba(204,0,0,${0.04 + i * 0.01}) 70%, transparent 100%)`,
-            }} />
-          ))}
-        </div>
-
-        {/* Layer 4 — Bottom-left corner accent */}
-        <div style={{
-          position: 'absolute',
-          bottom: '80px', left: '48px',
-          width: '120px', height: '120px',
-          border: '1px solid rgba(204,0,0,0.08)',
-          borderRight: 'none', borderTop: 'none',
-          pointerEvents: 'none', zIndex: 0,
-        }} />
-
-        {/* Layer 5 — Top-left corner accent */}
-        <div style={{
-          position: 'absolute',
-          top: '40px', left: '48px',
-          width: '80px', height: '80px',
-          border: '1px solid rgba(204,0,0,0.08)',
-          borderBottom: 'none', borderRight: 'none',
-          pointerEvents: 'none', zIndex: 0,
-        }} />
-
-        {/* ── All existing text content below — wrap in relative zIndex ── */}
-        <div style={{ position: 'relative', zIndex: 1 }}>
 
           {/* Pre-title label */}
           <div style={{
@@ -341,7 +277,6 @@ export default function Hero() {
               Our Acts
             </a>
           </div>
-        </div>{/* end zIndex wrapper */}
       </div>
 
       {/* ── Bottom Marquee Ticker ─────────────────────────── */}
@@ -367,7 +302,7 @@ export default function Hero() {
               <span style={{ color: '#CC0000', marginRight: '24px' }}>◆</span>
               ILHAAM 2026
               <span style={{ color: '#CC0000', margin: '0 24px' }}>◆</span>
-              30 MARCH · UIET
+              29–30 MARCH · UIET
               <span style={{ color: '#CC0000', margin: '0 24px' }}>◆</span>
               STAGE PLAY: ACID
               <span style={{ color: '#CC0000', margin: '0 24px' }}>◆</span>
@@ -377,7 +312,11 @@ export default function Hero() {
               <span style={{ color: '#CC0000', margin: '0 24px' }}>◆</span>
               THEATRE TALKS
               <span style={{ color: '#CC0000', margin: '0 24px' }}>◆</span>
-              PRIZE POOL ₹11,500
+              PRIZE POOL ₹15,000
+              <span style={{ color: '#CC0000', margin: '0 24px' }}>◆</span>
+              PANJAB UNIVERSITY
+              <span style={{ color: '#CC0000', margin: '0 24px' }}>◆</span>
+              THE THEATRE CLUB
               <span style={{ color: '#CC0000', margin: '0 24px' }}>◆</span>
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
             </span>
