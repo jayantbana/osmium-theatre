@@ -9,10 +9,16 @@ export default function Home() {
   return (
     <>
       <Hero />
-      <Acts />
+      <section id="acts">
+        <Acts />
+      </section>
       <IlhaamTeaser />
-      <Performances />
-      <Contact />
+      <section id="performances">
+        <Performances />
+      </section>
+      <section id="contact">
+        <Contact />
+      </section>
     </>
   );
 }

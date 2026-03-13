@@ -1,20 +1,22 @@
 import React, { useState, useEffect } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { Menu, X } from 'lucide-react';
 import { useIsMobile } from '../hooks/useIsMobile';
 
-const links = [
-  { label: 'Home', to: '/', anchor: false },
-  { label: 'Our Acts', to: '#acts', anchor: true },
-  { label: 'ILHAAM', to: '/ilhaam', anchor: false, highlight: true },
-  { label: 'Performances', to: '#performances', anchor: true },
-  { label: 'Contact', to: '#contact', anchor: true },
+const navLinks = [
+  { label: 'Home', path: '/' },
+  { label: 'Our Acts', section: 'acts' },
+  { label: 'ILHAAM', path: '/ilhaam', highlight: true },
+  { label: 'Performances', section: 'performances' },
+  { label: 'Contact', section: 'contact' },
 ];
 
 export default function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [open, setOpen] = useState(false);
   const isMobile = useIsMobile();
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const fn = () => setScrolled(window.scrollY > 60);
@@ -22,9 +24,24 @@ export default function Navbar() {
     return () => window.removeEventListener('scroll', fn);
   }, []);
 
-  const handleAnchor = (id) => {
+  const handleNavClick = (link) => {
     setOpen(false);
-    setTimeout(() => document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' }), 100);
+    if (link.section) {
+      // If already on home page — just scroll
+      if (location.pathname === '/') {
+        const el = document.getElementById(link.section);
+        if (el) el.scrollIntoView({ behavior: 'smooth' });
+      } else {
+        // Navigate to home first, then scroll after page loads
+        navigate('/');
+        setTimeout(() => {
+          const el = document.getElementById(link.section);
+          if (el) el.scrollIntoView({ behavior: 'smooth' });
+        }, 300);
+      }
+    } else {
+      navigate(link.path);
+    }
   };
 
   const navStyle = {
@@ -73,48 +90,51 @@ export default function Navbar() {
         {/* Desktop links — hidden on mobile */}
         {!isMobile && (
         <div style={{ display: 'flex', alignItems: 'center', gap: '32px' }}>
-          {links.map(l => {
-            if (l.highlight) return (
-              <Link key={l.label} to={l.to} style={{
-                color: '#DC143C', fontSize: '11px', fontWeight: 700,
-                letterSpacing: '0.2em', textTransform: 'uppercase',
-                textDecoration: 'none',
-                border: '1px solid rgba(220,20,60,0.5)',
-                padding: '8px 18px', borderRadius: '6px',
-                transition: 'all 0.2s',
-              }}
-                onMouseEnter={e => { e.currentTarget.style.background = '#DC143C'; e.currentTarget.style.color = '#fff'; }}
-                onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#DC143C'; }}
-              >
-                {l.label}
-              </Link>
-            );
-            if (l.anchor) return (
-              <button key={l.label}
-                onClick={() => handleAnchor(l.to.replace('#', ''))}
-                style={{
-                  background: 'none', border: 'none', cursor: 'pointer',
-                  color: '#9CA3AF', fontSize: '11px', fontWeight: 500,
-                  letterSpacing: '0.2em', textTransform: 'uppercase',
-                  transition: 'color 0.2s', padding: 0,
-                }}
-                onMouseEnter={e => e.currentTarget.style.color = '#DC143C'}
-                onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
-              >
-                {l.label}
-              </button>
-            );
+          {navLinks.map(link => {
+            const isActive = link.path && location.pathname === link.path;
             return (
-              <Link key={l.label} to={l.to} style={{
-                color: '#9CA3AF', fontSize: '11px', fontWeight: 500,
-                letterSpacing: '0.2em', textTransform: 'uppercase',
-                textDecoration: 'none', transition: 'color 0.2s',
-              }}
-                onMouseEnter={e => e.currentTarget.style.color = '#DC143C'}
-                onMouseLeave={e => e.currentTarget.style.color = '#9CA3AF'}
+              <button
+                key={link.label}
+                onClick={() => handleNavClick(link)}
+                style={{
+                  background: link.highlight
+                    ? (isActive ? '#DC143C' : 'transparent')
+                    : 'none',
+                  border: link.highlight
+                    ? `1px solid ${isActive ? '#DC143C' : 'rgba(204,0,0,0.5)'}`
+                    : 'none',
+                  cursor: 'pointer',
+                  color: link.highlight
+                    ? (isActive ? '#fff' : '#DC143C')
+                    : (isActive ? '#CC0000' : '#9CA3AF'),
+                  fontSize: '11px',
+                  fontWeight: link.highlight ? 700 : 600,
+                  letterSpacing: '0.25em',
+                  textTransform: 'uppercase',
+                  fontFamily: 'Inter, sans-serif',
+                  padding: link.highlight ? '8px 18px' : '8px 0',
+                  transition: 'all 0.2s ease',
+                  borderRadius: '6px',
+                }}
+                onMouseEnter={e => {
+                  if (link.highlight) {
+                    e.currentTarget.style.background = '#DC143C';
+                    e.currentTarget.style.color = '#fff';
+                  } else {
+                    e.currentTarget.style.color = '#F5F0E8';
+                  }
+                }}
+                onMouseLeave={e => {
+                  if (link.highlight) {
+                    e.currentTarget.style.background = isActive ? '#DC143C' : 'transparent';
+                    e.currentTarget.style.color = isActive ? '#fff' : '#DC143C';
+                  } else {
+                    e.currentTarget.style.color = isActive ? '#CC0000' : '#9CA3AF';
+                  }
+                }}
               >
-                {l.label}
-              </Link>
+                {link.label}
+              </button>
             );
           })}
           <Link to="/register" style={{
@@ -151,17 +171,26 @@ export default function Navbar() {
           background: 'rgba(8,8,8,0.99)', borderTop: '1px solid rgba(220,20,60,0.15)',
           padding: '28px', display: 'flex', flexDirection: 'column', gap: '20px',
         }}>
-          {links.map(l => (
-            <a key={l.label} href={l.anchor ? l.to : undefined}
-              onClick={() => l.anchor ? handleAnchor(l.to.replace('#', '')) : setOpen(false)}
+          {navLinks.map(link => (
+            <button
+              key={link.label}
+              onClick={() => handleNavClick(link)}
               style={{
-                color: l.highlight ? '#DC143C' : '#9CA3AF',
-                fontSize: '12px', letterSpacing: '0.25em',
-                textTransform: 'uppercase', textDecoration: 'none', fontWeight: 600,
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                color: link.highlight ? '#DC143C' : '#9CA3AF',
+                fontSize: '12px',
+                letterSpacing: '0.25em',
+                textTransform: 'uppercase',
+                textDecoration: 'none',
+                fontWeight: 600,
+                padding: 0,
+                textAlign: 'left',
               }}
             >
-              {l.label}
-            </a>
+              {link.label}
+            </button>
           ))}
           <Link to="/register" onClick={() => setOpen(false)} style={{
             background: '#DC143C', color: '#fff', textDecoration: 'none',
