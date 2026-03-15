@@ -57,23 +57,23 @@ export default function IlhaamTeaser() {
   const [progress, setProgress] = useState(0);
   const [transitioning, setTransitioning] = useState(false);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
-  const timerRef = useRef(null);
   const progressRef = useRef(null);
   const [headerRef, headerVisible] = useReveal(0.15);
   const [infoRef, infoVisible] = useReveal(0.15);
 
   const goTo = useCallback((i) => {
+    if (i === active) return;
     setTransitioning(true);
-    clearInterval(timerRef.current);
     clearInterval(progressRef.current);
     setTimeout(() => {
       setActive(i);
       setProgress(0);
       setTransitioning(false);
     }, 250);
-  }, []);
+  }, [active]);
 
-  const startTimer = useCallback((current) => {
+  // Auto-advance: restarts cleanly every time `active` changes
+  useEffect(() => {
     clearInterval(progressRef.current);
     let p = 0;
     progressRef.current = setInterval(() => {
@@ -81,22 +81,17 @@ export default function IlhaamTeaser() {
       setProgress(p);
       if (p >= 100) {
         clearInterval(progressRef.current);
-        goTo((current + 1) % events.length);
+        setTransitioning(true);
+        setTimeout(() => {
+          setActive(prev => (prev + 1) % events.length);
+          setProgress(0);
+          setTransitioning(false);
+        }, 250);
       }
     }, 50);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [goTo]);
 
-  useEffect(() => {
-    startTimer(0);
-    const timerInterval = timerRef.current;
-    const progressInterval = progressRef.current;
-    return () => {
-      clearInterval(timerInterval);
-      clearInterval(progressInterval);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    return () => clearInterval(progressRef.current);
+  }, [active]);
 
   useEffect(() => {
     const handleResize = () => setIsMobile(window.innerWidth < 768);

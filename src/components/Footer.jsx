@@ -20,18 +20,28 @@ export default function Footer() {
         {/* Brand */}
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <img
-              src="/images/logo.png"
-              alt="OSMIUM Logo"
-              style={{
-                height: '52px',
-                width: 'auto',
-                objectFit: 'contain',
-                display: 'block',
-                opacity: 0.9,
-                filter: 'brightness(0) invert(1)',
-              }}
-            />
+            {/* ── Circular Logo — no filter ── */}
+            <div style={{
+              width: '48px',
+              height: '48px',
+              borderRadius: '50%',
+              overflow: 'hidden',
+              flexShrink: 0,
+              border: '1px solid rgba(204,0,0,0.3)',
+            }}>
+              <img
+                src="/images/logo.png"
+                alt="OSMIUM Logo"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center 40%',
+                  transform: 'scale(1.15)',
+                  transformOrigin: 'center 40%',
+                }}
+              />
+            </div>
             <div>
               <div className="font-display font-black text-white text-xl tracking-widest">OSMIUM</div>
               <div className="text-crimson text-xs tracking-[0.3em] uppercase">The Theatre Club</div>

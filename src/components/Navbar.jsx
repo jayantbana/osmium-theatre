@@ -66,23 +66,53 @@ export default function Navbar() {
       <div style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 28px', display: 'flex', alignItems: 'center', justifyContent: 'space-between' }}>
 
         {/* Logo */}
-        <Link to="/" style={{ display: 'flex', alignItems: 'center', gap: '12px', textDecoration: 'none' }}>
-          <img
-            src="/images/logo.png"
-            alt="OSMIUM Logo"
-            style={{
+        <Link to="/" style={{ display: 'flex', alignItems: 'center', textDecoration: 'none' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+            {/* Circular Logo */}
+            <div style={{
+              width: '42px',
               height: '42px',
-              width: 'auto',
-              objectFit: 'contain',
-              display: 'block',
-            }}
-          />
-          <div>
-            <div style={{ fontFamily: "'Playfair Display', serif", fontWeight: 900, color: '#fff', fontSize: '18px', letterSpacing: '0.15em', lineHeight: 1 }}>
-              OSMIUM
+              borderRadius: '50%',
+              overflow: 'hidden',
+              flexShrink: 0,
+              border: '1px solid rgba(204,0,0,0.3)',
+            }}>
+              <img
+                src="/images/logo.png"
+                alt="OSMIUM Logo"
+                style={{
+                  width: '100%',
+                  height: '100%',
+                  objectFit: 'cover',
+                  objectPosition: 'center 40%',
+                  transform: 'scale(1.15)',
+                  transformOrigin: 'center 40%',
+                }}
+              />
             </div>
-            <div style={{ color: '#DC143C', fontSize: '9px', letterSpacing: '0.35em', textTransform: 'uppercase', lineHeight: 1, marginTop: '3px' }}>
-              The Theatre Club
+
+            <div>
+              <div style={{
+                fontFamily: "'Cormorant', serif",
+                fontWeight: 900,
+                fontSize: '18px',
+                color: '#F5F0E8',
+                letterSpacing: '0.1em',
+                lineHeight: 1,
+              }}>
+                OSMIUM
+              </div>
+              <div style={{
+                color: '#CC0000',
+                fontSize: '8px',
+                letterSpacing: '0.4em',
+                textTransform: 'uppercase',
+                fontFamily: 'Inter, sans-serif',
+                fontWeight: 600,
+                marginTop: '2px',
+              }}>
+                THE THEATRE CLUB
+              </div>
             </div>
           </div>
         </Link>

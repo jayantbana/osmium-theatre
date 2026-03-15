@@ -3,6 +3,7 @@ import { useReveal } from '../hooks/useReveal';
 
 const acts = [
   {
+    id: 'stageplay',
     num: 'I',
     title: 'Stage Play',
     tagline: 'The Grand Narrative',
@@ -13,6 +14,7 @@ const acts = [
     images: ['/images/stage-play.png'],
   },
   {
+    id: 'monoact',
     num: 'II',
     title: 'Monoact',
     tagline: 'One Stage. One Soul.',
@@ -23,6 +25,7 @@ const acts = [
     images: ['/images/monoact.jpg'],
   },
   {
+    id: 'mime',
     num: 'III',
     title: 'Mime',
     tagline: 'Silence Speaks Volumes',
@@ -33,6 +36,7 @@ const acts = [
     images: ['/images/monoact.jpg', '/images/monoact2.png'],
   },
   {
+    id: 'nukkad',
     num: 'IV',
     title: 'Nukkad Natak',
     tagline: 'Theatre of the Streets',
@@ -43,6 +47,7 @@ const acts = [
     images: ['/images/nukkad-natak.jpg'],
   },
   {
+    id: 'skits',
     num: 'V',
     title: 'Skits',
     tagline: 'Short. Sharp. Impactful.',
@@ -309,19 +314,23 @@ export default function Acts() {
                 }}>
                   {act.highlight}
                 </span>
-                <a href="/register" style={{
-                  background: 'transparent', border: '1px solid #CC0000',
-                  color: '#CC0000', textDecoration: 'none',
-                  padding: '10px 24px', borderRadius: '2px',
-                  fontSize: '10px', letterSpacing: '0.25em',
-                  textTransform: 'uppercase', fontWeight: 700,
-                  fontFamily: 'Inter, sans-serif', transition: 'all 0.2s ease',
-                }}
-                  onMouseEnter={e => { e.currentTarget.style.background = '#CC0000'; e.currentTarget.style.color = '#fff'; }}
-                  onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#CC0000'; }}
-                >
-                  Register
-                </a>
+
+                {/* ── Only show Register for Nukkad & Monoact ── */}
+                {(act.id === 'nukkad' || act.id === 'monoact') && (
+                  <a href="/register" style={{
+                    background: 'transparent', border: '1px solid #CC0000',
+                    color: '#CC0000', textDecoration: 'none',
+                    padding: '10px 24px', borderRadius: '2px',
+                    fontSize: '10px', letterSpacing: '0.25em',
+                    textTransform: 'uppercase', fontWeight: 700,
+                    fontFamily: 'Inter, sans-serif', transition: 'all 0.2s ease',
+                  }}
+                    onMouseEnter={e => { e.currentTarget.style.background = '#CC0000'; e.currentTarget.style.color = '#fff'; }}
+                    onMouseLeave={e => { e.currentTarget.style.background = 'transparent'; e.currentTarget.style.color = '#CC0000'; }}
+                  >
+                    Register
+                  </a>
+                )}
               </div>
             </div>
           </div>
